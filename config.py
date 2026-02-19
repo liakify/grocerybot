@@ -1,5 +1,6 @@
 """Configuration management for GroceryBot."""
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -15,3 +16,4 @@ DATABASE_PATH = BASE_DIR / "grocerybot.db"
 
 # Logging configuration
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+LOG_STREAM = sys.stdout
