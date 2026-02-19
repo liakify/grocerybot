@@ -1,7 +1,6 @@
 """Database operations for GroceryBot."""
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
 from typing import List, Optional, Tuple
 
 import config
@@ -52,13 +51,24 @@ def add_item(chat_id: int, item: str) -> bool:
     Returns:
         True if item was added, False if it already exists.
     """
-    item = item.strip().lower()
+    original_item = item.strip()
+    item_lower = original_item.lower()
+    
     try:
         with get_connection() as conn:
             cursor = conn.cursor()
+            # Check if item already exists (case-insensitive)
+            cursor.execute(
+                "SELECT id FROM grocery_items WHERE chat_id = ? AND LOWER(item) = ?",
+                (chat_id, item_lower)
+            )
+            if cursor.fetchone():
+                return False
+            
+            # Insert the item with original case
             cursor.execute(
                 "INSERT INTO grocery_items (chat_id, item) VALUES (?, ?)",
-                (chat_id, item)
+                (chat_id, original_item)
             )
         return True
     except sqlite3.IntegrityError:
@@ -81,37 +91,6 @@ def add_items(chat_id: int, items: List[str]) -> Tuple[int, int]:
             existing += 1
     
     return added, existing
-
-
-def remove_item(chat_id: int, item: str) -> bool:
-    """Remove an item from the grocery list.
-    
-    Returns:
-        True if item was removed, False if not found.
-    """
-    item = item.strip().lower()
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "DELETE FROM grocery_items WHERE chat_id = ? AND item = ?",
-            (chat_id, item)
-        )
-        return cursor.rowcount > 0
-
-
-def remove_item_by_number(chat_id: int, number: int) -> Optional[str]:
-    """Remove an item by its number in the list.
-    
-    Returns:
-        The removed item name, or None if not found.
-    """
-    items = get_items(chat_id)
-    
-    if 0 < number <= len(items):
-        item = items[number - 1]["item"]
-        if remove_item(chat_id, item):
-            return item
-    return None
 
 
 def get_items(chat_id: int) -> List[sqlite3.Row]:
