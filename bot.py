@@ -1,10 +1,10 @@
 """Main bot application for GroceryBot."""
+import json
 import logging
+from datetime import datetime
 from telegram.ext import (
     Application,
     CommandHandler,
-    MessageHandler,
-    filters,
 )
 
 import config
@@ -18,11 +18,30 @@ from handlers import (
     get_callback_handler,
 )
 
+
+class JSONFormatter(logging.Formatter):
+    """JSON log formatter."""
+    
+    def format(self, record):
+        log_data = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "level": record.levelname,
+            "logger": record.name,
+            "message": record.getMessage(),
+        }
+        if record.exc_info:
+            log_data["exception"] = self.formatException(record.exc_info)
+        return json.dumps(log_data)
+
+
 # Configure logging
-logging.basicConfig(
-    format=config.LOG_FORMAT,
-    level=getattr(logging, config.LOG_LEVEL),
-)
+handler = logging.StreamHandler(config.LOG_STREAM)
+handler.setFormatter(JSONFormatter())
+
+root_logger = logging.getLogger()
+root_logger.setLevel(getattr(logging, config.LOG_LEVEL))
+root_logger.addHandler(handler)
+
 logger = logging.getLogger(__name__)
 
 
