@@ -35,7 +35,6 @@ async def add_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         )
         return
     
-    # Parse items - join all args and split by newlines
     items = [item.strip() for item in context.args]
     
     if not items:
