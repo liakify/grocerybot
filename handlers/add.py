@@ -28,14 +28,8 @@ async def add_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     
     # Get the text after the command from the full message text
     message_text = update.effective_message.text
-    # Remove the /add command (allow /add@botname format too)
-    if message_text.startswith("/add"):
-        cmd_text = message_text[4:].lstrip()  # Remove /add and leading whitespace
-    elif "/add@" in message_text:
-        # Handle /add@botname format
-        cmd_text = message_text[message_text.index(" ") + 1:].lstrip() if " " in message_text else ""
-    else:
-        cmd_text = ""
+    parts = message_text.split(None, 1)
+    cmd_text = parts[1] if len(parts) > 1 else ""
     
     if not cmd_text:
         await update.message.reply_text(
