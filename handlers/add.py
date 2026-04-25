@@ -36,8 +36,7 @@ async def add_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         return
     
     # Parse items - join all args and split by newlines
-    text = " ".join(context.args)
-    items = [item.strip() for item in text.split("\n") if item.strip()]
+    items = [item.strip() for item in context.args]
     
     if not items:
         await update.message.reply_text(
