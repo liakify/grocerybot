@@ -12,7 +12,9 @@ logger = logging.getLogger(__name__)
 async def add_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Add items to the grocery list.
     
-    Usage: /add <item> or /add <item1>, <item2>, <item3>
+    Usage: /add <item1> <item2> <item3>
+    Items are separated by newlines.
+    Example: /add milk eggs bread
     """
     chat_id = update.effective_chat.id
     
@@ -27,14 +29,15 @@ async def add_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     # Get the text after the command
     if not context.args:
         await update.message.reply_text(
-            "Usage: /add <item> or /add <item1>, <item2>, <item3>\n"
-            "Example: /add milk, eggs, bread"
+            "Usage: /add <item1> <item2> <item3>\n"
+            "Example: /add milk eggs bread\n"
+            "(items are separated by newlines)"
         )
         return
     
-    # Parse items - support both comma-separated and space-separated
+    # Parse items - join all args and split by newlines
     text = " ".join(context.args)
-    items = [item.strip() for item in text.split(",") if item.strip()]
+    items = [item.strip() for item in text.split("\n") if item.strip()]
     
     if not items:
         await update.message.reply_text(

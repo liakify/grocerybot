@@ -62,7 +62,7 @@ python bot.py
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `/add` | Add item(s) to the list | `/add milk, eggs` |
+| `/add` | Add item(s) to the list | `/add milk eggs bread (newline delimited)` |
 | `/list` | Show list with toggle buttons | `/list` |
 | `/remove` | Show list with remove buttons | `/remove` |
 | `/clear` | Clear all items from the list | `/clear` |

@@ -14,8 +14,8 @@ I help manage a shared grocery list for your group!
 **Commands:**
 
 • `/add <item>` - Add item(s) to the list
-  Example: `/add milk, eggs`
-  Example: `/add bread`
+  Example: `/add milk eggs bread`
+  (items are separated by newlines)
 
 • `/remove` - Show list with remove buttons to delete items
 
