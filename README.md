@@ -14,6 +14,7 @@ A Telegram bot that manages shared grocery lists in group chats. Each group gets
 ## Requirements
 
 - Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) (install: `curl -LsSf https://astral.sh/uv/install.sh | sh`)
 - Telegram account
 - Telegram Bot Token (from @BotFather)
 
@@ -21,18 +22,12 @@ A Telegram bot that manages shared grocery lists in group chats. Each group gets
 
 1. **Clone or download this repository**
 
-2. **Create a virtual environment** (recommended)
+2. **Install dependencies**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   uv sync
    ```
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure the bot**
+3. **Configure the bot**
    
    Copy the example environment file:
    ```bash
@@ -44,7 +39,7 @@ A Telegram bot that manages shared grocery lists in group chats. Each group gets
    BOT_TOKEN=your_bot_token_here
    ```
 
-5. **Get a bot token**
+4. **Get a bot token**
    
    - Open Telegram and search for @BotFather
    - Send `/newbot` to create a new bot
@@ -53,9 +48,15 @@ A Telegram bot that manages shared grocery lists in group chats. Each group gets
 
 ## Usage
 
-Run the bot:
+Run the bot (development):
 ```bash
-python bot.py
+uv run python bot.py
+```
+
+Run as a systemd user service (production):
+```bash
+systemctl --user enable --now grocerybot.service
+journalctl --user -u grocerybot.service -f
 ```
 
 ### Commands
@@ -84,14 +85,17 @@ grocerybot/
 ├── database.py         # Database operations
 ├── handlers/           # Command handlers
 │   ├── __init__.py
-│   ├── add.py
-│   ├── remove.py
-│   ├── list.py
-│   ├── clear.py
-│   └── help.py
-├── requirements.txt    # Python dependencies
-├── .env.example       # Environment variables template
-└── README.md          # This file
+│   ├── add.py          # /add command
+│   ├── remove.py       # /remove command (remove buttons)
+│   ├── list.py         # /list command (toggle buttons)
+│   ├── clear.py        # /clear command
+│   ├── help.py         # /help command
+│   ├── callbacks.py    # Inline button callback handler
+│   └── utils.py        # Shared list builder functions
+├── pyproject.toml      # Project metadata and dependencies
+├── .env.example        # Environment variables template
+├── .gitignore          # Git ignore rules
+└── README.md           # This file
 ```
 
 ## How It Works
