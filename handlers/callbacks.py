@@ -63,7 +63,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             parse_mode="Markdown"
         )
     
-    logger.info(f"Chat {chat_id}: Callback {action} for item {item_id}")
+    logger.info("Callback handled", extra={"chat_id": chat_id, "action": action, "item_id": item_id})
 
 
 def get_callback_handler():

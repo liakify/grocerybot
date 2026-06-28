@@ -19,9 +19,11 @@ from handlers import (
 )
 
 
+STRUCTURED_FIELDS = {"chat_id", "command", "action", "item_id", "added", "existing", "removed", "item_count"}
+
 class JSONFormatter(logging.Formatter):
-    """JSON log formatter."""
-    
+    """JSON log formatter with structured fields."""
+
     def format(self, record):
         log_data = {
             "timestamp": datetime.utcnow().isoformat() + "Z",
@@ -29,6 +31,10 @@ class JSONFormatter(logging.Formatter):
             "logger": record.name,
             "message": record.getMessage(),
         }
+        for key in STRUCTURED_FIELDS:
+            val = getattr(record, key, None)
+            if val is not None:
+                log_data[key] = val
         if record.exc_info:
             log_data["exception"] = self.formatException(record.exc_info)
         return json.dumps(log_data)
@@ -98,7 +104,7 @@ def main():
     application.add_error_handler(error_handler)
     
     # Log startup
-    logger.info("GroceryBot is starting...")
+    logger.info("GroceryBot is starting...", extra={"command": "startup"})
     print("🤖 GroceryBot is running! Press Ctrl+C to stop.")
     
     # Start polling (for development)

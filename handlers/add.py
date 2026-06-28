@@ -65,4 +65,4 @@ async def add_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         response = f"⚠️ All items are already in the list!"
     
     await update.message.reply_text(response)
-    logger.info(f"Chat {chat_id}: Added {added}, existing {existing}")
+    logger.info("Items added", extra={"chat_id": chat_id, "added": added, "existing": existing})

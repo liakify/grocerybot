@@ -33,4 +33,4 @@ async def remove_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         reply_markup=reply_markup, 
         parse_mode="Markdown"
     )
-    logger.info(f"Chat {chat_id}: Listed {len(items)} items with remove buttons")
+    logger.info("Remove list displayed", extra={"chat_id": chat_id, "item_count": len(items)})

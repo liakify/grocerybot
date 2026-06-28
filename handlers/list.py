@@ -30,4 +30,4 @@ async def list_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         reply_markup=reply_markup, 
         parse_mode="Markdown"
     )
-    logger.info(f"Chat {chat_id}: Listed {len(items)} items with toggle buttons")
+    logger.info("List displayed", extra={"chat_id": chat_id, "item_count": len(items)})

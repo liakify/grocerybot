@@ -40,4 +40,4 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     Usage: /help
     """
     await update.message.reply_text(HELP_TEXT, parse_mode="Markdown")
-    logger.info(f"Chat {update.effective_chat.id}: Help requested")
+    logger.info("Help requested", extra={"chat_id": update.effective_chat.id})

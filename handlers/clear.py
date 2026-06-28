@@ -38,4 +38,4 @@ async def clear_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     await update.message.reply_text(
         f"🗑️ Cleared {removed} item(s) from the grocery list!"
     )
-    logger.info(f"Chat {chat_id}: Cleared {removed} items")
+    logger.info("List cleared", extra={"chat_id": chat_id, "removed": removed})
