@@ -1,0 +1,9 @@
+[project]
+name = "grocerybot"
+version = "0.1.0"
+description = "Telegram bot for shared group grocery lists"
+requires-python = ">=3.10"
+dependencies = [
+    "python-telegram-bot>=20.0",
+    "python-dotenv>=1.0.0",
+]

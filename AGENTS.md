@@ -5,13 +5,15 @@ Python 3.10+ Telegram bot for shared group grocery lists. Uses `python-telegram-
 ## Setup & Run
 
 ```bash
-pip install -r requirements.txt
+uv sync
 cp .env.example .env   # then add BOT_TOKEN from @BotFather
-python bot.py
+uv run python bot.py
 ```
 
 - `config.py` loads `.env` via `python-dotenv`; `BOT_TOKEN` is required, `LOG_LEVEL` optional (default INFO).
 - Runs polling via `application.run_polling(drop_pending_updates=True)`. For production, switch to `run_webhook` in `bot.py:105`.
+- **Production deployment**: systemd user service at `~/.config/systemd/user/grocerybot.service`. Managed via `systemctl --user {start,stop,restart,status} grocerybot.service`. Logs via journald: `journalctl --user -u grocerybot.service -f`.
+- Dependencies defined in `pyproject.toml` (not `requirements.txt`). `uv sync` creates `.venv/` and installs them.
 
 ## Architecture
 
